@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&amp;display=swap');
+      .bg {
+        fill: #f9fafb;
+      }
+      .title {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        font-size: 72px;
+        fill: #111827;
+      }
+      .subtitle {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 36px;
+        fill: #6b7280;
+      }
+      .label {
+        font-family: 'Inter', sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+        fill: #374151;
+      }
+      .icon-text {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        font-size: 96px;
+      }
+      .icon-blue {
+        fill: #4A90E2;
+      }
+      .icon-green {
+        fill: #10B981;
+      }
+      .code-bg {
+        fill: #1f2937;
+        rx: 8;
+      }
+      .code-text {
+        font-family: 'Consolas', 'Monaco', monospace;
+        font-size: 20px;
+        fill: #e5e7eb;
+      }
+      .code-tag {
+        fill: #f472b6;
+      }
+      .code-attr {
+        fill: #60a5fa;
+      }
+      .code-value {
+        fill: #a78bfa;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1280" height="800"/>
+
+  <!-- Title -->
+  <text class="title" x="640" y="120" text-anchor="middle">View in Markdown</text>
+  <text class="subtitle" x="640" y="170" text-anchor="middle">Access Markdown source file with one click</text>
+
+  <!-- Left side: link rel="alternate" -->
+  <g transform="translate(210, 260)">
+    <!-- Icon -->
+    <text class="icon-text icon-blue" x="150" y="100" text-anchor="middle">md</text>
+
+    <!-- Label -->
+    <text class="label" x="150" y="170" text-anchor="middle">Markdown Version Link</text>
+
+    <!-- Code example -->
+    <rect class="code-bg" x="0" y="200" width="300" height="140"/>
+    <text class="code-text" x="20" y="230">
+      <tspan class="code-tag">&lt;link</tspan>
+    </text>
+    <text class="code-text" x="40" y="252">
+      <tspan class="code-attr">rel</tspan>=<tspan class="code-value">"alternate"</tspan>
+    </text>
+    <text class="code-text" x="40" y="274">
+      <tspan class="code-attr">type</tspan>=<tspan class="code-value">"text/markdown"</tspan>
+    </text>
+    <text class="code-text" x="40" y="296">
+      <tspan class="code-attr">href</tspan>=<tspan class="code-value">"file.md"</tspan>
+    </text>
+    <text class="code-text" x="20" y="318">
+      <tspan class="code-tag">/&gt;</tspan>
+    </text>
+  </g>
+
+  <!-- Right side: .md anchor -->
+  <g transform="translate(770, 260)">
+    <!-- Icon -->
+    <text class="icon-text icon-green" x="150" y="100" text-anchor="middle">md</text>
+
+    <!-- Label -->
+    <text class="label" x="150" y="170" text-anchor="middle">Markdown Anchor</text>
+
+    <!-- Code example -->
+    <rect class="code-bg" x="0" y="200" width="300" height="140"/>
+    <text class="code-text" x="20" y="230">
+      <tspan class="code-tag">&lt;a</tspan>
+    </text>
+    <text class="code-text" x="40" y="252">
+      <tspan class="code-attr">href</tspan>=<tspan class="code-value">"file.md"</tspan>
+    </text>
+    <text class="code-text" x="20" y="274">
+      <tspan class="code-tag">&gt;</tspan>
+    </text>
+    <text class="code-text" x="40" y="296">
+      Markdown version
+    </text>
+    <text class="code-text" x="20" y="318">
+      <tspan class="code-tag">&lt;/a&gt;</tspan>
+    </text>
+  </g>
+
+  <!-- Footer text -->
+  <text class="subtitle" x="640" y="700" text-anchor="middle">Click the extension icon to view the Markdown source</text>
+</svg>
