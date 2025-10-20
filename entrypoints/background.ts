@@ -5,19 +5,11 @@ const ICON_MAP: Record<string, string> = {
 };
 
 export default defineBackground(() => {
-  const markdownUrls = new Map<Required<Browser.tabs.Tab>["id"], string>();
-
   browser.runtime.onMessage.addListener((message, sender) => {
     if (!sender.tab?.id) return;
 
     const iconPath = ICON_MAP[message.type];
     if (!iconPath) return;
-
-    if (message.type === "markdown-not-found") {
-      markdownUrls.delete(sender.tab.id);
-    } else {
-      markdownUrls.set(sender.tab.id, message.url);
-    }
 
     browser.action.setIcon({
       path: iconPath,
@@ -25,13 +17,18 @@ export default defineBackground(() => {
     });
   });
 
-  browser.action.onClicked.addListener((tab) => {
-    if (tab.id && markdownUrls.has(tab.id)) {
-      browser.tabs.create({ url: markdownUrls.get(tab.id) });
-    }
-  });
+  browser.action.onClicked.addListener(async (tab) => {
+    if (!tab.id) return;
 
-  browser.tabs.onRemoved.addListener((tabId) => {
-    markdownUrls.delete(tabId);
+    try {
+      const response = await browser.tabs.sendMessage(tab.id, {
+        type: "get-markdown-url",
+      });
+      if (response?.url) {
+        browser.tabs.create({ url: response.url });
+      }
+    } catch {
+      // Tab is not available (e.g. chrome://newtab)
+    }
   });
 });

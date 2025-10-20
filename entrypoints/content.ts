@@ -1,3 +1,19 @@
+function getMarkdownUrl(): string | null {
+  const linkAlternate = document.querySelector<HTMLLinkElement>(
+    'link[rel="alternate"][type="text/markdown"]'
+  );
+  if (linkAlternate) {
+    return linkAlternate.href;
+  }
+
+  const mdAnchor = findMarkdownAnchor();
+  if (mdAnchor) {
+    return convertToGitHubRawUrl(mdAnchor.href);
+  }
+
+  return null;
+}
+
 function checkMarkdownLink() {
   const linkAlternate = document.querySelector<HTMLLinkElement>(
     'link[rel="alternate"][type="text/markdown"]'
@@ -5,19 +21,15 @@ function checkMarkdownLink() {
   if (linkAlternate) {
     browser.runtime.sendMessage({
       type: "markdown-found",
-      url: linkAlternate.href,
     });
     return;
   }
 
   const mdAnchor = findMarkdownAnchor();
   if (mdAnchor) {
-    const url = convertToGitHubRawUrl(mdAnchor.href);
     browser.runtime.sendMessage({
       type: "markdown-likely",
-      url: url,
     });
-
     return;
   }
 
@@ -108,5 +120,12 @@ export default defineContentScript({
 
     // Handle browser back/forward navigation
     window.addEventListener("pageshow", checkMarkdownLink);
+
+    // Handle messages from background script
+    browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.type === "get-markdown-url") {
+        sendResponse({ url: getMarkdownUrl() });
+      }
+    });
   },
 });
