@@ -66,15 +66,26 @@ function findMarkdownAnchor(): HTMLAnchorElement | null {
 
   const currentPath = window.location.pathname;
 
-  // Extract filename without extension
-  // e.g., "/foo/bar/baz.html" -> "baz"
-  const currentFilename = currentPath
-    .split("/")
-    .pop()
-    ?.replace(/\.(html?)$/, "");
+  // Extract filename without extension as candidate: "/foo/bar/baz.html" -> ["baz"]
+  // If path ends with "/", use "index" and last folder name as candidates: "/foo/bar/" -> ["index", "bar"]
+  const pathParts = currentPath.split("/").filter(Boolean);
+  const currentFilename =
+    pathParts.length > 0
+      ? pathParts[pathParts.length - 1].replace(/\.(html?)$/, "")
+      : null;
 
-  // Prioritize anchors matching current filename
+  // Build candidates list
+  const candidates: string[] = [];
   if (currentFilename) {
+    candidates.push(currentFilename);
+    // If URL ends with "/", also consider "index" as a candidate
+    if (currentPath.endsWith("/")) {
+      candidates.push("index");
+    }
+  }
+
+  // Prioritize anchors matching current filename candidates
+  for (const candidate of candidates) {
     for (const anchor of allMdAnchors) {
       try {
         const url = new URL(anchor.href);
@@ -83,7 +94,7 @@ function findMarkdownAnchor(): HTMLAnchorElement | null {
           .pop()
           ?.replace(/\.mdx?$/, "");
 
-        if (filename === currentFilename) {
+        if (filename === candidate) {
           return anchor;
         }
       } catch {
