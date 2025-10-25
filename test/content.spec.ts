@@ -9,8 +9,8 @@ const mockBrowser = {
     },
   },
 };
-global.browser = mockBrowser as any;
-global.defineContentScript = mock((config: any) => config) as any;
+(global as any).browser = mockBrowser as any;
+(global as any).defineContentScript = mock((config: any) => config) as any;
 
 const repoUrl = "https://github.com/user/repo";
 
