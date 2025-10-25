@@ -14,7 +14,7 @@ function getMarkdownUrl(): string | null {
   return null;
 }
 
-function checkMarkdownLink() {
+export function checkMarkdownLink() {
   const linkAlternate = document.querySelector<HTMLLinkElement>(
     'link[rel="alternate"][type="text/markdown"]'
   );
@@ -38,7 +38,7 @@ function checkMarkdownLink() {
   });
 }
 
-function convertToGitHubRawUrl(url: string): string {
+export function convertToGitHubRawUrl(url: string): string {
   if (url.includes("github.com") && !url.includes("/raw/")) {
     return url.replace(/\/(blob|edit|tree)\//g, "/raw/");
   }
@@ -46,7 +46,7 @@ function convertToGitHubRawUrl(url: string): string {
   return url;
 }
 
-function findMarkdownAnchor(): HTMLAnchorElement | null {
+export function findMarkdownAnchor(): HTMLAnchorElement | null {
   const allAnchors = document.querySelectorAll<HTMLAnchorElement>("a[href]");
   const allMdAnchors: HTMLAnchorElement[] = [];
 
