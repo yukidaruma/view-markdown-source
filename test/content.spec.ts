@@ -99,6 +99,17 @@ describe("findMarkdownAnchor", () => {
     expect(result?.href).toBe("https://example.com/bar.mdx");
   });
 
+  it("should support .rst files", async () => {
+    setWindowLocation("/foo/bar.html");
+    document.body.innerHTML = `
+      <a href="https://example.com/bar.rst">Bar</a>
+    `;
+
+    const { findMarkdownAnchor } = await import("../entrypoints/content");
+    const result = findMarkdownAnchor();
+    expect(result?.href).toBe("https://example.com/bar.rst");
+  });
+
   it.each(["/user/repo", "/user/repo/"])(
     "should prioritize README.md on GitHub repo root (%s)",
     async (pathname) => {

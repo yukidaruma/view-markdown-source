@@ -50,11 +50,15 @@ export function findMarkdownAnchor(): HTMLAnchorElement | null {
   const allAnchors = document.querySelectorAll<HTMLAnchorElement>("a[href]");
   const allMdAnchors: HTMLAnchorElement[] = [];
 
-  // Find all anchors that point to .md or .mdx files (excluding query strings)
+  // Find all anchors that point to .md, .mdx, or .rst files (excluding query strings)
   for (const anchor of allAnchors) {
     try {
       const url = new URL(anchor.href);
-      if (url.pathname.endsWith(".md") || url.pathname.endsWith(".mdx")) {
+      if (
+        url.pathname.endsWith(".md") ||
+        url.pathname.endsWith(".mdx") ||
+        url.pathname.endsWith(".rst")
+      ) {
         allMdAnchors.push(anchor);
       }
     } catch {
@@ -77,7 +81,7 @@ export function findMarkdownAnchor(): HTMLAnchorElement | null {
           const filename = url.pathname
             .split("/")
             .pop()
-            ?.replace(/\.mdx?$/, "");
+            ?.replace(/\.(mdx?|rst)$/, "");
 
           if (filename === "README") {
             return anchor;
@@ -115,7 +119,7 @@ export function findMarkdownAnchor(): HTMLAnchorElement | null {
         const filename = url.pathname
           .split("/")
           .pop()
-          ?.replace(/\.mdx?$/, "");
+          ?.replace(/\.(mdx?|rst)$/, "");
 
         if (filename === candidate) {
           return anchor;
