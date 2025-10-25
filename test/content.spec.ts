@@ -134,7 +134,7 @@ describe("findMarkdownAnchor", () => {
   });
 });
 
-describe("checkMarkdownLink", () => {
+describe("checkForMarkdown", () => {
   beforeEach(() => {
     mockBrowser.runtime.sendMessage.mockClear();
     document.head.innerHTML = "";
@@ -146,8 +146,8 @@ describe("checkMarkdownLink", () => {
       <link rel="alternate" type="text/markdown" href="https://example.com/doc.md">
     `;
 
-    const { checkMarkdownLink } = await import("../entrypoints/content");
-    checkMarkdownLink();
+    const { checkForMarkdown } = await import("../entrypoints/content");
+    checkForMarkdown();
 
     expect(mockBrowser.runtime.sendMessage).toHaveBeenCalledWith({
       type: "markdown-found",
@@ -162,8 +162,8 @@ describe("checkMarkdownLink", () => {
       <a href="https://example.com/from-anchor.md">Anchor</a>
     `;
 
-    const { checkMarkdownLink } = await import("../entrypoints/content");
-    checkMarkdownLink();
+    const { checkForMarkdown } = await import("../entrypoints/content");
+    checkForMarkdown();
 
     expect(mockBrowser.runtime.sendMessage).toHaveBeenCalledWith({
       type: "markdown-found",
@@ -175,8 +175,8 @@ describe("checkMarkdownLink", () => {
       <a href="https://example.com/doc.md">Doc</a>
     `;
 
-    const { checkMarkdownLink } = await import("../entrypoints/content");
-    checkMarkdownLink();
+    const { checkForMarkdown } = await import("../entrypoints/content");
+    checkForMarkdown();
 
     expect(mockBrowser.runtime.sendMessage).toHaveBeenCalledWith({
       type: "markdown-likely",
@@ -188,8 +188,8 @@ describe("checkMarkdownLink", () => {
       <a href="https://example.com/doc.html">HTML</a>
     `;
 
-    const { checkMarkdownLink } = await import("../entrypoints/content");
-    checkMarkdownLink();
+    const { checkForMarkdown } = await import("../entrypoints/content");
+    checkForMarkdown();
 
     expect(mockBrowser.runtime.sendMessage).toHaveBeenCalledWith({
       type: "markdown-not-found",
@@ -202,25 +202,19 @@ describe("convertToGitHubRawUrl", () => {
 
   it("should convert GitHub blob URL to raw URL", async () => {
     const { convertToGitHubRawUrl } = await import("../entrypoints/content");
-    const result = convertToGitHubRawUrl(
-      `${repoUrl}/blob/main/file.md`
-    );
+    const result = convertToGitHubRawUrl(`${repoUrl}/blob/main/file.md`);
     expect(result).toBe(`${repoUrl}/raw/main/file.md`);
   });
 
   it("should convert GitHub edit URL to raw URL", async () => {
     const { convertToGitHubRawUrl } = await import("../entrypoints/content");
-    const result = convertToGitHubRawUrl(
-      `${repoUrl}/edit/main/file.md`
-    );
+    const result = convertToGitHubRawUrl(`${repoUrl}/edit/main/file.md`);
     expect(result).toBe(`${repoUrl}/raw/main/file.md`);
   });
 
   it("should convert GitHub tree URL to raw URL", async () => {
     const { convertToGitHubRawUrl } = await import("../entrypoints/content");
-    const result = convertToGitHubRawUrl(
-      `${repoUrl}/tree/main/file.md`
-    );
+    const result = convertToGitHubRawUrl(`${repoUrl}/tree/main/file.md`);
     expect(result).toBe(`${repoUrl}/raw/main/file.md`);
   });
 

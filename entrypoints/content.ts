@@ -14,7 +14,7 @@ function getMarkdownUrl(): string | null {
   return null;
 }
 
-export function checkMarkdownLink() {
+export function checkForMarkdown() {
   const linkAlternate = document.querySelector<HTMLLinkElement>(
     'link[rel="alternate"][type="text/markdown"]'
   );
@@ -120,17 +120,17 @@ export default defineContentScript({
   matches: ["<all_urls>"],
   main() {
     // Initial check
-    checkMarkdownLink();
+    checkForMarkdown();
 
     // Watch for DOM changes (SPA)
-    const observer = new MutationObserver(checkMarkdownLink);
+    const observer = new MutationObserver(checkForMarkdown);
     observer.observe(document.documentElement, {
       childList: true,
       subtree: true,
     });
 
     // Handle browser back/forward navigation
-    window.addEventListener("pageshow", checkMarkdownLink);
+    window.addEventListener("pageshow", checkForMarkdown);
 
     // Handle messages from background script
     browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
