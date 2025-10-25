@@ -12,6 +12,8 @@ const mockBrowser = {
 global.browser = mockBrowser as any;
 global.defineContentScript = mock((config: any) => config) as any;
 
+const repoUrl = "https://github.com/user/repo";
+
 // Helper to set window location
 function setWindowLocation(pathname: string, hostname = "example.com") {
   const url = `https://${hostname}${pathname}`;
@@ -97,16 +99,31 @@ describe("findMarkdownAnchor", () => {
     expect(result?.href).toBe("https://example.com/bar.mdx");
   });
 
+  it.each(["/user/repo", "/user/repo/"])(
+    "should prioritize README.md on GitHub repo root (%s)",
+    async (pathname) => {
+      setWindowLocation(pathname, "github.com");
+      document.body.innerHTML = `
+      <a href="${repoUrl}/blob/main/other.md">Other</a>
+      <a href="${repoUrl}/blob/main/README.md">README</a>
+    `;
+
+      const { findMarkdownAnchor } = await import("../entrypoints/content");
+      const result = findMarkdownAnchor();
+      expect(result?.href).toBe(`${repoUrl}/blob/main/README.md`);
+    }
+  );
+
   it("should prioritize /raw/ anchor on GitHub", async () => {
     setWindowLocation("/foo/bar.html", "github.com");
     document.body.innerHTML = `
-      <a href="https://github.com/user/repo/blob/main/baz.md">Blob</a>
-      <a href="https://github.com/user/repo/raw/main/other.md">Raw</a>
+      <a href="${repoUrl}/blob/main/baz.md">Blob</a>
+      <a href="${repoUrl}/raw/main/other.md">Raw</a>
     `;
 
     const { findMarkdownAnchor } = await import("../entrypoints/content");
     const result = findMarkdownAnchor();
-    expect(result?.href).toBe("https://github.com/user/repo/raw/main/other.md");
+    expect(result?.href).toBe(`${repoUrl}/raw/main/other.md`);
   });
 
   it("should return first markdown anchor when no match found", async () => {
@@ -198,8 +215,6 @@ describe("checkForMarkdown", () => {
 });
 
 describe("convertToGitHubRawUrl", () => {
-  const repoUrl = "https://github.com/user/repo";
-
   it("should convert GitHub blob URL to raw URL", async () => {
     const { convertToGitHubRawUrl } = await import("../entrypoints/content");
     const result = convertToGitHubRawUrl(`${repoUrl}/blob/main/file.md`);

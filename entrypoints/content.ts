@@ -66,6 +66,29 @@ export function findMarkdownAnchor(): HTMLAnchorElement | null {
 
   const currentPath = window.location.pathname;
 
+  // For GitHub repo root, assume the filename is README.md
+  if (window.location.hostname === "github.com") {
+    const pathMatch = currentPath.match(/^\/([^\/]+)\/([^\/]+)\/?$/);
+    if (pathMatch) {
+      // URL is in format https://github.com/user/repo or https://github.com/user/repo/
+      for (const anchor of allMdAnchors) {
+        try {
+          const url = new URL(anchor.href);
+          const filename = url.pathname
+            .split("/")
+            .pop()
+            ?.replace(/\.mdx?$/, "");
+
+          if (filename === "README") {
+            return anchor;
+          }
+        } catch {
+          // Skip Invalid URL
+        }
+      }
+    }
+  }
+
   // Extract filename without extension as candidate: "/foo/bar/baz.html" -> ["baz"]
   // If path ends with "/", use "index" and last folder name as candidates: "/foo/bar/" -> ["index", "bar"]
   const pathParts = currentPath.split("/").filter(Boolean);
