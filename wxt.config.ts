@@ -3,12 +3,12 @@ import { defineConfig } from "wxt";
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   manifest: {
-    name: "View in Markdown",
+    name: "View Markdown Source",
     icons: {
       128: "icon-gray.png",
     },
     action: {
-      default_title: "View in Markdown",
+      default_title: "View Markdown Source",
     },
   },
   webExt: {

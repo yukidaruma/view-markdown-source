@@ -59,7 +59,7 @@
   <rect class="bg" width="1280" height="800"/>
 
   <!-- Title -->
-  <text class="title" x="640" y="120" text-anchor="middle">View in Markdown</text>
+  <text class="title" x="640" y="120" text-anchor="middle">View Markdown Source</text>
   <text class="subtitle" x="640" y="170" text-anchor="middle">Access Markdown source file with one click</text>
 
   <!-- Left side: link rel="alternate" -->

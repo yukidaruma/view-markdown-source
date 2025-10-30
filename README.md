@@ -1,4 +1,4 @@
-# View in Markdown
+# View Markdown Source
 
 ![](./docs/promo-1280x800.svg)
 
