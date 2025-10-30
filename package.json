@@ -21,5 +21,8 @@
     "wxt": "0.20.11",
     "@wxt-dev/browser": "0.1.4",
     "@wxt-dev/storage": "1.2.5"
+  },
+  "dependencies": {
+    "wxt-module-clipboard": "^0.1.2"
   }
 }

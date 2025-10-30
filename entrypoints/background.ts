@@ -1,3 +1,9 @@
+import { GetMarkdownUrlResponse } from "../shared/messages";
+
+// NOTE: This import is dynamically replcaced depending on `COPY_MARKDOWN_SOURCE`
+// environment variable using Vite's `resolve.alias`.
+import onGetUrl from "../shared/on-get-url-view";
+
 const ICON_MAP: Record<string, string> = {
   "markdown-found": "/icon-blue.png",
   "markdown-likely": "/icon-green.png",
@@ -21,11 +27,14 @@ export default defineBackground(() => {
     if (!tab.id) return;
 
     try {
-      const response = await browser.tabs.sendMessage(tab.id, {
+      const response = await browser.tabs.sendMessage<
+        any,
+        GetMarkdownUrlResponse
+      >(tab.id, {
         type: "get-markdown-url",
       });
       if (response?.url) {
-        browser.tabs.create({ url: response.url });
+        onGetUrl(response);
       }
     } catch {
       // Tab is not available (e.g. chrome://newtab)
