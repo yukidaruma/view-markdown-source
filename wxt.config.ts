@@ -22,6 +22,7 @@ export default defineConfig({
     action: {
       default_title: extensionName,
     },
+    permissions: isCopyVersion ? ["notifications"] : undefined,
   },
   vite: () => ({
     define: {
