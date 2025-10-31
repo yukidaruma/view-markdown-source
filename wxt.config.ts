@@ -28,14 +28,6 @@ export default defineConfig({
     define: {
       "import.meta.env.COPY_MARKDOWN_SOURCE": JSON.stringify(isCopyVersion),
     },
-    resolve: {
-      alias: isCopyVersion
-        ? {
-            "../shared/on-get-markdown-url-view":
-              "../shared/on-get-markdown-url-copy",
-          }
-        : ({} as Record<string, string>),
-    },
   }),
   webExt: {
     disabled: true,

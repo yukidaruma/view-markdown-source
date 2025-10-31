@@ -1,8 +1,11 @@
 import { GetMarkdownUrlResponse } from "../shared/messages";
 
-// NOTE: This import is dynamically replcaced depending on `COPY_MARKDOWN_SOURCE`
-// environment variable using Vite's `resolve.alias`.
-import onGetMarkdownUrl from "../shared/on-get-markdown-url-view";
+import copyOnGetMarkdownUrl from "../shared/on-get-markdown-url-copy";
+import viewOnGetMarkdown from "../shared/on-get-markdown-url-view";
+
+const handler = import.meta.env.COPY_MARKDOWN_SOURCE
+  ? copyOnGetMarkdownUrl
+  : viewOnGetMarkdown;
 
 const ICON_MAP: Record<string, string> = {
   "markdown-found": "/icon-blue.png",
@@ -34,7 +37,7 @@ export default defineBackground(() => {
         type: "get-markdown-url",
       });
       if (response?.url) {
-        onGetMarkdownUrl(response);
+        handler(response);
       }
     } catch {
       // Tab is not available (e.g. chrome://newtab)
