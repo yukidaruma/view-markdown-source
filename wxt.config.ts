@@ -31,7 +31,8 @@ export default defineConfig({
     resolve: {
       alias: isCopyVersion
         ? {
-            "../shared/on-get-url-view": "../shared/on-get-url-copy",
+            "../shared/on-get-markdown-url-view":
+              "../shared/on-get-markdown-url-copy",
           }
         : ({} as Record<string, string>),
     },

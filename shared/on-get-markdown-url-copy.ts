@@ -11,7 +11,9 @@ function showNotification(message: string) {
   });
 }
 
-export default async function onGetUrl(response: GetMarkdownUrlResponse) {
+export default async function onGetMarkdownUrl(
+  response: GetMarkdownUrlResponse
+) {
   try {
     const markdownResponse = await fetch(response.url);
 
