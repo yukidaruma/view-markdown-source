@@ -20,10 +20,14 @@ export default defineBackground(() => {
     const iconPath = ICON_MAP[message.type];
     if (!iconPath) return;
 
-    browser.action.setIcon({
-      path: iconPath,
-      tabId: sender.tab.id,
-    });
+    return browser.action
+      .setIcon({
+        path: iconPath,
+        tabId: sender.tab.id,
+      })
+      .catch(() => {
+        /* suppress error */
+      });
   });
 
   browser.action.onClicked.addListener(async (tab) => {
